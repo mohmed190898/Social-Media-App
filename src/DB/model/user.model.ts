@@ -2,6 +2,7 @@ import mongoose from "mongoose";
 import { GenderEnum, ProviderEnum, RoleEnum } from "../../common/enum";
 import { IUser } from "../../common/interface";
 import { HydratedDocument } from "mongoose";
+import { encryption, hash } from "../../common/security";
 
 const userSchema = new mongoose.Schema<IUser>({
     firstName: {
@@ -63,6 +64,15 @@ userSchema.virtual("username").set(function (value) {
     this.set({ firstName, lastName })
 }).get(function () {
     return `${this.firstName} ${this.lastName}`
+})
+
+userSchema.pre('save', async function () {
+    // if (this.isModified("passsword")) {
+    //     this.password = await hash(this.password);
+    // }
+    // if (this.isModified("phone")) {
+    //     this.phone = await encryption(this.phone);
+    // }
 })
 
 export const UserModel = mongoose.models.User || mongoose.model<IUser>("User", userSchema)

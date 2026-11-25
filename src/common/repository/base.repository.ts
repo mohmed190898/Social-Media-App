@@ -223,6 +223,10 @@ export abstract class DatabaseRepository<TRawDocType> {
         })
     }
 
+    async insertMany({ data }: { data: AnyKeys<TRawDocType>[] }) {
+        return await this.model.insertMany(data)
+    }
+
     // DELETE
     async deleteOne(
         {
@@ -250,7 +254,7 @@ export abstract class DatabaseRepository<TRawDocType> {
             filter?: QueryFilter<TRawDocType>
         }
     ): Promise<HydratedDocument<TRawDocType> | null> {
-        return await this.model.findOneAndUpdate(filter)
+        return await this.model.findOneAndDelete(filter)
     }
     async findByIdAndDelete(
         {

@@ -5,6 +5,17 @@ import { responseFormatter } from "../../middleware/response.middleware";
 import { IResponse, IUser } from "../../common/interface";
 import * as validators from "./authentication.validation"
 import { validation } from "../../middleware/validation.middleware";
+import { getISsuer } from "../../common/utilis";
+import { ILoginResponse, ISignupWithGmailResponse } from "./entities/authentication.entities";
+
+
+router.post("/signup-with-gmail",
+    responseFormatter(
+        async (req: Request, res: Response, next: NextFunction): Promise<IResponse<ILoginResponse>> => {
+            const { data, status } = await authService.signupWithGmail(req.body, getISsuer(req));
+            return { status: 201, data }
+        }
+    ))
 router.post("/signup",
     validation(validators.signupSchema)
     , responseFormatter(
@@ -13,6 +24,7 @@ router.post("/signup",
             return { status: 201, data }
         }
     ))
+
 router.patch("/confirm-email", validation(validators.confirmEmail),
     responseFormatter(
         async (req: Request, res: Response, next: NextFunction): Promise<void> => {
@@ -27,5 +39,13 @@ router.patch("/resend-confirm-email", validation(validators.resendConfirmEmail),
         }
     ))
 
+router.post("/login",
+    validation(validators.login)
+    , responseFormatter(
+        async (req: Request, res: Response, next: NextFunction): Promise<IResponse<ILoginResponse>> => {
+            const data = await authService.login(req.validate.body, getISsuer(req));
+            return { status: 201, data }
+        }
+    ))
 
 export default router

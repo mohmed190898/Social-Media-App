@@ -1,4 +1,3 @@
-import { AnyKeys, CreateOptions, HydratedDocument } from "mongoose";
 import { UserModel } from "../../DB/model";
 import { IUser } from "../interface";
 import { DatabaseRepository } from "./base.repository";

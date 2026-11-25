@@ -16,7 +16,7 @@ export interface IUser {
     confirmationMail?: string,
     image?: string,
     coverImage?: string[],
-    changeCredentialsTime: string,
-    createdAt?: string,
-    updatedAt?: string,
+    changeCredentialsTime: Date,
+    createdAt?: Date,
+    updatedAt?: Date,
 }
